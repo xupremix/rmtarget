@@ -2,6 +2,8 @@ use std::path::PathBuf;
 
 use clap::Parser;
 
+// Argument parser, for semplicity sake we're using clap
+// instead of the std::env::collect approach
 #[derive(Parser, Debug)]
 #[command(
     name = "rmtarget", 

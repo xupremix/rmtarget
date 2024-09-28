@@ -10,6 +10,7 @@ use clap::Parser;
 const EXIT_FAILURE: i32 = 1;
 
 fn main() {
+    // parse the command line arguments
     let args = Args::parse();
 
     let mut cleared = 0;
@@ -23,6 +24,7 @@ fn main() {
         exit(EXIT_FAILURE);
     }
 
+    // remove targets recursively
     rm_targets(
         &args.dir,
         &args.targets,
@@ -31,6 +33,7 @@ fn main() {
         &mut weight,
     );
 
+    // format the output
     if !args.quiet {
         println!("Cleared {} target directories", cleared);
         let (freed, suff) = match weight {
@@ -43,6 +46,7 @@ fn main() {
     }
 }
 
+// function to remvoe the target directories
 pub(crate) fn rm_targets(
     dir: &Path,
     targets: &[PathBuf],
@@ -73,6 +77,7 @@ pub(crate) fn rm_targets(
                 exit(EXIT_FAILURE);
             }
         };
+        // check that the name is in the targets list
         if filetype.is_dir() {
             if targets.iter().any(|t| {
                 t.file_name().expect("Could not get file name (exiting): ") == entry.file_name()
@@ -99,6 +104,7 @@ pub(crate) fn rm_targets(
     }
 }
 
+// aux function to calculate the weight of a directory
 pub(crate) fn dir_weight(path: &Path) -> u64 {
     let mut w = 0;
     if path.is_dir() {
